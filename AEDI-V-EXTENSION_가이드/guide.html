@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>AEDI-V 크리에이터 사용 가이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  /* ===== Design tokens (aedi / Vuexy palette) — print-scaled ===== */
+  :root{
+    --primary:#7367f0;
+    --primary-600:#655be1;
+    --primary-050:#f1f0fd;
+    --primary-100:#e7e5fb;
+    --danger:#ea5455;
+    --danger-050:#fdeeee;
+    --success:#28c76f;
+    --success-050:#e9f9f0;
+    --warning:#ff9f43;
+    --warning-050:#fff3e6;
+    --info:#00cfe8;
+    --info-050:#e6fafd;
+    --ink:#2f2b3d;
+    --body:#4b465c;
+    --muted:#8b8896;
+    --line:#e8e7ec;
+    --line-strong:#dcdbe2;
+    --bg:#f6f5fa;
+    --card:#ffffff;
+    --radius:10px;
+    --shadow-sm:0 1px 2px rgba(47,43,61,.06);
+    --font:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono:"SFMono-Regular",Consolas,"D2Coding",monospace;
+    --trackA:#2b7fff;
+    --trackA-050:#eaf3ff;
+    --trackA-100:#d3e6ff;
+    --trackB:#ff8f2b;
+    --trackB-050:#fff4e9;
+    --trackB-100:#ffe3c7;
+  }
+
+  @page{ size:A4; margin:14mm 13mm 15mm; }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:var(--font);
+    color:var(--body);
+    background:#fff;
+    font-size:12.4px;
+    line-height:1.72;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:-.1px;
+  }
+  p{margin:0 0 10px;}
+  strong{color:var(--ink);font-weight:700;}
+  a{color:var(--primary-600);}
+
+  /* ===== Cover ===== */
+  .cover{
+    break-after:page;
+    height:252mm;
+    display:flex;flex-direction:column;
+    padding:6mm 0 0;
+  }
+  .cover-top{flex:1 1 auto;}
+  .cover-logo{width:132px;height:auto;display:block;margin-bottom:48px;}
+  .cover-eyebrow{
+    display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:2.2px;
+    color:var(--primary-600);background:var(--primary-050);border:1px solid var(--primary-100);
+    padding:5px 13px;border-radius:999px;text-transform:uppercase;
+  }
+  .cover-title{
+    font-size:41px;line-height:1.22;color:var(--ink);font-weight:800;
+    margin:22px 0 14px;letter-spacing:-1.2px;
+  }
+  .cover-sub{font-size:15px;color:var(--muted);font-weight:500;margin:0;max-width:122mm;}
+  .cover-rule{height:4px;width:64px;background:var(--primary);border-radius:999px;margin:30px 0 0;}
+  .cover-meta{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:14px 26px;
+    border-top:1px solid var(--line);padding-top:20px;margin-top:24px;
+  }
+  .cover-meta div{font-size:11px;color:var(--muted);}
+  .cover-meta div b{display:block;color:var(--ink);font-size:13px;font-weight:700;margin-top:2px;}
+  .cover-note{
+    margin-top:20px;font-size:10.5px;color:var(--muted);
+    border-top:1px solid var(--line);padding-top:12px;
+  }
+  .cover-note b{color:var(--ink);}
+
+  /* ===== Table of contents ===== */
+  .toc-page{}
+  .toc-h{
+    font-size:22px;color:var(--ink);font-weight:800;letter-spacing:-.5px;
+    margin:0 0 4px;
+  }
+  .toc-lead{font-size:12px;color:var(--muted);margin:0 0 22px;}
+  .toc{list-style:none;margin:0;padding:0;}
+  .toc > li{
+    display:flex;align-items:baseline;gap:12px;
+    padding:11px 0;border-bottom:1px solid var(--line);
+  }
+  .toc .n{
+    flex:0 0 26px;width:26px;height:26px;border-radius:7px;
+    background:var(--primary-050);color:var(--primary-600);
+    font-size:12px;font-weight:800;text-align:center;line-height:26px;
+    align-self:center;
+  }
+  .toc .t{flex:1 1 auto;font-size:14px;font-weight:700;color:var(--ink);}
+  .toc .d{font-size:11.5px;color:var(--muted);font-weight:500;}
+
+  /* ===== Sections ===== */
+  /* Every chapter opens a page, so a title never sits at the foot of one. */
+  section.chap{margin-bottom:26px;break-before:page;}
+  .sec-head{display:flex;align-items:center;gap:11px;margin:0 0 6px;break-after:avoid;}
+  .sec-no{
+    flex:0 0 auto;min-width:27px;height:27px;padding:0 8px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--primary);color:#fff;font-weight:800;font-size:12.5px;
+  }
+  h2.sec-title{font-size:19.5px;color:var(--ink);font-weight:800;margin:0;letter-spacing:-.45px;}
+  .sec-desc{color:var(--muted);font-size:12.2px;margin:0 0 16px 38px;break-after:avoid;}
+  h3{
+    font-size:14.6px;color:var(--ink);font-weight:800;
+    margin:22px 0 8px;letter-spacing:-.2px;break-after:avoid;
+  }
+
+  /* ===== Inline bits ===== */
+  .chip{
+    display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;
+    color:var(--primary-600);background:var(--primary-050);border:1px solid var(--primary-100);
+    border-radius:5px;padding:0 5px;margin:0 1px;white-space:nowrap;
+  }
+  /* Long store URL: printed, so it has to wrap instead of running off the page. */
+  p.link{margin:6px 0 0;}
+  p.link a{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;line-height:1.5;
+    color:var(--primary-600);text-decoration:none;
+    overflow-wrap:anywhere;word-break:break-all;
+  }
+  .kbd{
+    display:inline-block;min-width:14px;text-align:center;font-family:var(--mono);
+    font-size:10.5px;font-weight:700;color:var(--ink);background:#fff;
+    border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:5px;
+    padding:0 6px;margin:0 1px;
+  }
+  .accent{color:var(--primary-600);font-weight:700;}
+  .ko{color:var(--muted);font-size:10.6px;font-weight:500;}
+
+  a.url{
+    display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;
+    color:var(--primary-600);background:var(--primary-050);border:1px solid var(--primary-100);
+    border-radius:5px;padding:1px 7px;margin:0 1px;white-space:nowrap;
+    text-decoration:underline;text-underline-offset:2px;
+  }
+  a.url.big{font-size:12.5px;padding:4px 11px;border-radius:7px;}
+  .cover-meta a.url{display:block;width:fit-content;font-size:11.5px;margin-top:4px;}
+
+  /* Track badges */
+  .tag-a,.tag-b{
+    display:inline-block;font-size:9.8px;font-weight:800;letter-spacing:.2px;
+    padding:1px 8px;border-radius:999px;vertical-align:1px;white-space:nowrap;
+  }
+  .tag-a{background:var(--trackA-050);color:var(--trackA);border:1px solid var(--trackA-100);}
+  .tag-b{background:var(--trackB-050);color:#e07a1a;border:1px solid var(--trackB-100);}
+  .sec-no.a{background:var(--trackA);}
+  .sec-no.b{background:var(--trackB);}
+
+  /* ===== Lists ===== */
+  .vlist{list-style:none;margin:6px 0 10px;padding:0;}
+  .nlist{margin:6px 0 10px;padding-left:19px;}
+  .nlist li{font-size:12.4px;color:var(--ink);margin:0 0 5px;line-height:1.65;}
+  .vlist li{position:relative;padding:3px 0 3px 13px;font-size:12.3px;color:var(--body);line-height:1.68;}
+  .vlist li::before{content:"";position:absolute;left:2px;top:9px;width:4px;height:4px;border-radius:50%;background:var(--primary);}
+  .vlist li b{color:var(--ink);font-weight:800;}
+
+  .numlist{list-style:none;margin:6px 0 10px;padding:0;counter-reset:nl;}
+  .numlist li{
+    position:relative;padding:6px 0 6px 30px;font-size:12.3px;
+    border-bottom:1px dashed var(--line);counter-increment:nl;break-inside:avoid;
+  }
+  .numlist li:last-child{border-bottom:0;}
+  .numlist li::before{
+    content:counter(nl);position:absolute;left:0;top:7px;width:20px;height:20px;border-radius:50%;
+    background:var(--primary);color:#fff;font-weight:800;font-size:10.5px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .numlist li b{color:var(--ink);}
+
+  /* ===== How-to ===== */
+  /* The step box may run across a page break - keeping it whole pushed a tall
+     list to the next page and left half a page empty. Steps stay intact. */
+  .howto{
+    margin:14px 0 12px;background:#fff;border:1px solid var(--primary-100);
+    border-radius:var(--radius);padding:17px 19px 18px;
+  }
+  .howto.a{border-color:var(--trackA-100);}
+  .howto.b{border-color:var(--trackB-100);}
+  .howto-title{
+    display:flex;align-items:center;gap:8px;font-size:13.4px;font-weight:800;
+    color:var(--ink);margin:0 0 3px;letter-spacing:-.2px;
+  }
+  .howto-title .tag{
+    font-size:9.6px;font-weight:800;letter-spacing:.4px;color:var(--primary-600);
+    background:var(--primary-050);border:1px solid var(--primary-100);
+    padding:1px 7px;border-radius:999px;
+  }
+  .howto.a .howto-title .tag{color:var(--trackA);background:var(--trackA-050);border-color:var(--trackA-100);}
+  .howto.b .howto-title .tag{color:#e07a1a;background:var(--trackB-050);border-color:var(--trackB-100);}
+  .howto-lead{font-size:11.4px;color:var(--muted);margin:0 0 14px;}
+  .howto-steps{list-style:none;margin:0;padding:0;position:relative;}
+  .howto-steps::before{content:"";position:absolute;left:13px;top:10px;bottom:12px;width:2px;background:linear-gradient(var(--primary-100),var(--line));}
+  .howto.a .howto-steps::before{background:linear-gradient(var(--trackA-100),var(--line));}
+  .howto.b .howto-steps::before{background:linear-gradient(var(--trackB-100),var(--line));}
+  .hstep{position:relative;display:flex;gap:13px;padding:0 0 15px;break-inside:avoid;}
+  .hstep:last-child{padding-bottom:0;}
+  .hstep .num{
+    flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:var(--primary);
+    color:#fff;font-weight:800;font-size:12.5px;display:flex;align-items:center;
+    justify-content:center;position:relative;z-index:1;
+  }
+  .howto.a .hstep .num{background:var(--trackA);}
+  .howto.b .hstep .num{background:var(--trackB);}
+  .hstep .box{flex:1 1 auto;min-width:0;padding-top:3px;}
+  .hstep .box > b{display:block;font-size:13px;color:var(--ink);font-weight:800;line-height:1.45;}
+  .hstep .box p{margin:4px 0 0;font-size:12.1px;color:var(--body);line-height:1.68;}
+  .hstep .box .vlist{margin:5px 0 0;}
+
+  /* ===== Callouts ===== */
+  .callout{
+    display:flex;gap:10px;border-radius:9px;padding:11px 13px;margin:12px 0;
+    font-size:11.9px;border:1px solid;line-height:1.65;break-inside:avoid;
+  }
+  .callout .ico{
+    flex:0 0 18px;width:18px;height:18px;border-radius:50%;display:flex;
+    align-items:center;justify-content:center;font-weight:800;font-size:11px;
+    color:#fff;margin-top:1px;
+  }
+  .callout b{display:block;margin-bottom:1px;}
+  .callout.tip{background:var(--primary-050);border-color:var(--primary-100);}
+  .callout.tip .ico{background:var(--primary);}
+  .callout.tip b{color:var(--primary-600);}
+  .callout.warn{background:var(--warning-050);border-color:#ffe2c2;}
+  .callout.warn .ico{background:var(--warning);}
+  .callout.warn b{color:#d97b1a;}
+  .callout.danger{background:var(--danger-050);border-color:#f9d3d3;}
+  .callout.danger .ico{background:var(--danger);}
+  .callout.danger b{color:var(--danger);}
+  .callout.info{background:var(--info-050);border-color:#c5f0f6;}
+  .callout.info .ico{background:var(--info);}
+  .callout.info b{color:#0aa5bb;}
+
+  /* ===== Tables ===== */
+  .tbl-wrap{border:1px solid var(--line);border-radius:var(--radius);margin:12px 0;overflow:hidden;break-inside:avoid;}
+  table{border-collapse:collapse;width:100%;font-size:11.6px;}
+  thead th{
+    background:#faf9fc;color:var(--ink);text-align:left;font-weight:800;font-size:10.8px;
+    letter-spacing:.2px;padding:8px 11px;border-bottom:1.5px solid var(--line-strong);
+  }
+  tbody td{padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6;}
+  tbody tr:last-child td{border-bottom:0;}
+  td b{color:var(--ink);}
+  td.num{white-space:nowrap;}
+  thead th.a{background:var(--trackA-050);color:var(--trackA);}
+  thead th.b{background:var(--trackB-050);color:#e07a1a;}
+
+  /* ===== Figures ===== */
+  /* Screenshots are wide, so full column width makes each one ~36% of a page and
+     three in a row leave a stranded figure on its own page. 86% packs them. */
+  figure.shot{
+    margin:12px auto;max-width:86%;
+    border:1px solid var(--line);border-radius:9px;overflow:hidden;
+    background:#fff;break-inside:avoid;
+  }
+  figure.shot img{display:block;width:100%;height:auto;}
+  figure.shot figcaption{
+    padding:7px 11px;font-size:10.6px;color:var(--muted);
+    border-top:1px solid var(--line);background:#fafafc;
+  }
+  figure.shot figcaption b{color:var(--ink);font-weight:700;}
+  figure.narrow{max-width:112mm;}
+  figure.mid{max-width:150mm;}
+
+  /* ===== Flow strip ===== */
+  .flow{
+    margin:14px 0;background:linear-gradient(135deg,#faf9ff,#f2f0ff);
+    border:1px solid var(--primary-100);border-radius:var(--radius);padding:15px 16px;
+    break-inside:avoid;
+  }
+  .flow-head{font-size:12.2px;font-weight:700;color:var(--body);margin:0 0 12px;line-height:1.55;}
+  .flow-head b{color:var(--primary-600);font-weight:800;}
+  .flow-steps{display:flex;align-items:stretch;gap:6px;}
+  .flow-steps .fs{
+    flex:1 1 0;display:flex;align-items:center;gap:8px;background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0;
+  }
+  .flow-steps .fs .b{
+    flex:0 0 22px;width:22px;height:22px;border-radius:6px;background:var(--primary);
+    color:#fff;font-weight:800;font-size:11.5px;display:flex;align-items:center;justify-content:center;
+  }
+  .flow-steps .fs .t{font-size:11.4px;font-weight:700;color:var(--ink);line-height:1.3;}
+  .flow-steps .ar{display:flex;align-items:center;color:var(--primary);font-weight:800;font-size:13px;}
+
+  /* ===== Split compare (A vs B) ===== */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:14px 0;break-inside:avoid;}
+  .split > div{border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;background:#fff;}
+  .split .h{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:var(--ink);margin:0 0 7px;}
+  .split .sub{font-size:10.8px;color:var(--muted);margin:0 0 9px;line-height:1.5;}
+  .split.ab > div:first-child{border-color:var(--trackA-100);background:linear-gradient(180deg,#f7fbff,#fff 60%);}
+  .split.ab > div:last-child{border-color:var(--trackB-100);background:linear-gradient(180deg,#fffaf5,#fff 60%);}
+  .split .vlist li::before{background:var(--trackA);}
+  .split > div:last-child .vlist li::before{background:var(--trackB);}
+  .split .vlist li{font-size:11.6px;padding:2px 0 2px 12px;}
+
+  /* ===== Footer band on the last page ===== */
+  .doc-end{
+    margin-top:26px;padding-top:14px;border-top:1px solid var(--line);
+    font-size:10.5px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;
+  }
+
+  h2,h3{break-after:avoid;}
+  section.chap{break-inside:auto;}
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<div class="cover">
+  <div class="cover-top">
+    <img class="cover-logo" src="logo.svg" alt="aedi-v">
+    <span class="cover-eyebrow">Chrome Extension Guide</span>
+    <h1 class="cover-title">AEDI-V<br>크리에이터 사용 가이드</h1>
+    <p class="cover-sub">YouTube Studio에서 AI가 영상 속 제품을 찾아내고, 제휴 링크와 함께
+      자동으로 태그해 수익을 만드는 방법을 설치부터 끝까지 안내합니다.</p>
+    <div class="cover-rule"></div>
+  </div>
+
+  <div class="cover-meta">
+    <div>설치처<b>Chrome Web Store</b></div>
+    <div>대상<b>MCN 에이전시 · 소속 크리에이터</b></div>
+    <div>동작 위치<b>YouTube Studio 동영상 세부정보</b></div>
+    <div>확장 버전<b>v1.2.79 · 2026-08-04</b></div>
+  </div>
+  <p class="cover-note"><b>이 문서에 대하여</b>
+    본문은 한국어로 작성된 <b>번역용 원고</b>이며, 화면 이미지는 실제 미국 사용자가 보게 되는
+    <b>영문 UI</b> 기준입니다. 본문에서 버튼·항목 이름은 화면에 보이는 영문 그대로 표기하고
+    뜻을 함께 적었습니다. 이미지 속 수치와 상품은 설명을 위한 예시입니다.</p>
+</div>
+
+<!-- ============================ TOC ============================ -->
+<div class="toc-page">
+  <h2 class="toc-h">목차</h2>
+  <p class="toc-lead">0~3장은 모든 크리에이터 공통이고, 4장과 5장은 <strong>채널 구독자 수에 따라 둘 중 하나만</strong> 읽으면 됩니다.</p>
+  <ul class="toc">
+    <li><span class="n">0</span><span class="t">AEDI-V는 무엇을 하나요</span><span class="d">전체 흐름 · 두 가지 수익화 방식</span></li>
+    <li><span class="n">1</span><span class="t">설치와 가입</span><span class="d">확장 설치 · 구글 로그인</span></li>
+    <li><span class="n">2</span><span class="t">시작 전 영상 조건 4가지</span><span class="d">이것부터 맞춰야 분석이 시작됩니다</span></li>
+    <li><span class="n">3</span><span class="t">AEDI-V 패널 살펴보기</span><span class="d">크레딧 · 요금제 · 메뉴 구성</span></li>
+    <li><span class="n">4</span><span class="t">구독자 500명 이상 — 제품 태그</span><span class="d">YouTube Shopping 제휴가 활성화된 채널</span></li>
+    <li><span class="n">5</span><span class="t">구독자 500명 미만 — 설명란 링크</span><span class="d">Amazon Associates를 사용하는 채널</span></li>
+    <li><span class="n">6</span><span class="t">크레딧과 요금제</span><span class="d">차감 기준 · 부족 알림 · 추가 크레딧</span></li>
+    <li><span class="n">7</span><span class="t">품절</span><span class="d">품절 알림 · 무료 교체 방법</span></li>
+    <li><span class="n">8</span><span class="t">알아두면 좋은 기능</span><span class="d">분석 결과 재사용 · 쇼츠 · 진행 상황</span></li>
+    <li><span class="n">9</span><span class="t">자주 묻는 질문</span><span class="d">문제가 생겼을 때 확인 순서</span></li>
+  </ul>
+</div>
+
+<!-- ============================ 0 ============================ -->
+<section class="chap" id="s0">
+  <div class="sec-head">
+    <div class="sec-no">0</div>
+    <h2 class="sec-title">AEDI-V는 무엇을 하나요</h2>
+  </div>
+  <p class="sec-desc">먼저 이 확장 프로그램이 어떤 일을 대신해 주는지, 전체 흐름이 어떻게 되는지 확인합니다.</p>
+
+  <p><strong>AEDI-V</strong>는 YouTube Studio에서 동작하는 <strong>크롬 확장 프로그램</strong>입니다.
+    크리에이터가 올린 영상을 AI가 분석해 <strong>영상 속에 등장한 제품을 찾아내고</strong>,
+    그 제품의 제휴 링크를 <strong>영상에 자동으로 붙여 줍니다.</strong>
+    시청자가 그 링크로 구매하면 크리에이터에게 수수료 수익이 발생합니다.</p>
+
+  <p>기존에는 크리에이터가 제품을 하나하나 검색해서 직접 태그해야 했습니다.
+    AEDI-V는 <strong>검색과 태그 등록을 자동화</strong>해 그 시간을 없애는 것이 핵심입니다.</p>
+
+  <div class="flow">
+    <div class="flow-head">전체 과정은 <b>다섯 단계</b>이며, 크리에이터가 직접 하는 일은 ④ 제품 고르기 하나뿐입니다.</div>
+    <div class="flow-steps">
+      <div class="fs"><span class="b">1</span><span class="t">확장 설치<br>· 로그인</span></div>
+      <span class="ar">›</span>
+      <div class="fs"><span class="b">2</span><span class="t">영상 선택</span></div>
+      <span class="ar">›</span>
+      <div class="fs"><span class="b">3</span><span class="t">AI 분석<br>(자동)</span></div>
+      <span class="ar">›</span>
+      <div class="fs"><span class="b">4</span><span class="t">제품 고르기</span></div>
+      <span class="ar">›</span>
+      <div class="fs"><span class="b">5</span><span class="t">적용<br>(자동)</span></div>
+    </div>
+  </div>
+
+  <h3>두 가지 수익화 방식 — 내 채널은 어느 쪽인가요?</h3>
+  <p>채널 상황에 따라 제휴 링크를 붙이는 방법이 <strong>두 가지로 나뉩니다.</strong>
+    어느 쪽인지는 <strong>AEDI-V가 자동으로 판별</strong>하므로 직접 고를 필요는 없습니다.
+    다만 화면과 결과물이 다르므로, 담당 크리에이터가 어느 쪽인지 미리 알아두면 안내하기 편합니다.</p>
+
+  <div class="split ab">
+    <div>
+      <p class="h"><span class="tag-a">500명 이상</span> 제품 태그</p>
+      <p class="sub">YouTube Shopping 제휴 프로그램이 <strong>이미 활성화된</strong> 채널</p>
+      <ul class="vlist">
+        <li>영상에 <b>YouTube 제품 태그</b>가 직접 등록됩니다</li>
+        <li>영상 <b>특정 구간</b>에만 제품을 노출할 수 있습니다 (타임스탬프)</li>
+        <li>시청자가 영상 위에서 바로 제품을 봅니다</li>
+        <li>결과: 영상 설명란 아래 <span class="chip">제품 태그</span></li>
+      </ul>
+    </div>
+    <div>
+      <p class="h"><span class="tag-b">500명 미만</span> 설명란 링크</p>
+      <p class="sub">YouTube Shopping을 아직 쓸 수 없어 <strong>Amazon Associates</strong>로 수익화하는 채널</p>
+      <ul class="vlist">
+        <li>영상 <b>설명란(Description)</b>에 제품명과 링크가 삽입됩니다</li>
+        <li>타임스탬프 구간 지정은 <b>지원하지 않습니다</b></li>
+        <li>시작 전 <b>Amazon Associates ID</b> 입력이 필요합니다</li>
+        <li>결과: <span class="chip">AI-recommended product list ▼</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="ico">i</div>
+    <div><b>YouTube Shopping 제휴 프로그램은 언제 열리나요</b>
+      화면 안내 문구 기준 <strong>구독자 500명 이상</strong>부터 신청할 수 있습니다.
+      활성화되면 AEDI-V가 자동으로 <strong>제품 태그 방식</strong>으로 전환됩니다.
+      그때까지는 설명란 링크로 수익화하면 됩니다.</div>
+  </div>
+</section>
+
+<!-- ============================ 1 ============================ -->
+<section class="chap" id="s1">
+  <div class="sec-head">
+    <div class="sec-no">1</div>
+    <h2 class="sec-title">설치와 가입</h2>
+  </div>
+  <p class="sec-desc">한 번만 하면 되는 과정입니다. 5분이면 끝납니다.</p>
+
+  <figure class="shot">
+    <img src="shots/00-store_en.png" alt="Chrome 웹스토어의 AEDI-V 확장 프로그램 등록 페이지">
+    <figcaption>Chrome 웹스토어의 AEDI-V 페이지 · 오른쪽 위 파란색 <b>Add to Chrome</b> 버튼으로 설치합니다</figcaption>
+  </figure>
+
+  <div class="howto">
+    <div class="howto-title"><span class="tag">STEP</span>처음 시작하기</div>
+    <p class="howto-lead">아래 순서대로 진행하면 바로 사용할 수 있는 상태가 됩니다.</p>
+    <ul class="howto-steps">
+      <li class="hstep">
+        <div class="num">1</div>
+        <div class="box">
+          <b>Chrome 웹스토어에서 확장 프로그램 설치</b>
+          <p>아래 주소로 접속해 <span class="chip">Add to Chrome</span> <span class="ko">(Chrome에 추가)</span> 버튼을 누릅니다.
+            확인 창이 뜨면 <span class="chip">Add extension</span> <span class="ko">(확장 프로그램 추가)</span>를 누릅니다.</p>
+          <p class="link"><a href="https://chromewebstore.google.com/detail/aedi-v-ai-product-matchin/bgfclceipgllbohhclicafhdcipbeogd?hl=en&amp;utm_source=ext_sidebar">chromewebstore.google.com/detail/aedi-v-ai-product-matchin/<wbr>bgfclceipgllbohhclicafhdcipbeogd?hl=en&amp;utm_source=ext_sidebar</a></p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">2</div>
+        <div class="box">
+          <b>Google 계정으로 로그인</b>
+          <p>설치가 끝나면 Google 로그인 창이 열립니다.
+            <strong>반드시 해당 YouTube 채널을 운영하는 계정</strong>으로 로그인해야 합니다.
+            로그인에 성공하면 YouTube Studio의 콘텐츠 목록으로 자동 이동합니다.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout info">
+    <div class="ico">i</div>
+    <div><b>여기까지가 공통입니다</b>
+      설치와 로그인이 끝나면 <strong>채널 구독자 수에 따라 다음 화면이 달라집니다.</strong>
+      <strong>500명 이상</strong>은 4장, <strong>500명 미만</strong>은 5장으로 이어서 보세요.
+      약관 동의와 Amazon Associates ID 입력은 각 장의 <strong>처음 시작 화면</strong>에서 설명합니다.</div>
+  </div>
+</section>
+
+<!-- ============================ 2 ============================ -->
+<section class="chap" id="s2">
+  <div class="sec-head">
+    <div class="sec-no">2</div>
+    <h2 class="sec-title">시작 전 영상 조건 4가지</h2>
+  </div>
+  <p class="sec-desc">가장 문의가 많은 부분입니다. 이 네 가지가 모두 맞아야 AI 분석이 시작됩니다.</p>
+
+  <p>영상 세부정보 페이지에 들어갔는데 AEDI-V 패널 대신 안내 팝업이 뜬다면,
+    아래 조건 중 <strong>하나 이상이 맞지 않은 것</strong>입니다.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:30%">조건</th><th style="width:34%">YouTube Studio에서 확인할 위치</th><th>맞춰야 하는 상태</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>저장</b><br><span class="ko">Save</span></td>
+          <td>페이지 오른쪽 위 <span class="chip">Save</span> 버튼</td>
+          <td>저장하지 않은 변경사항이 <strong>없어야</strong> 합니다. 버튼이 활성화되어 있으면 먼저 저장하세요.</td>
+        </tr>
+        <tr>
+          <td><b>공개 상태</b><br><span class="ko">Visibility</span></td>
+          <td><span class="chip">Visibility</span> 항목</td>
+          <td><strong>Public</strong> 또는 <strong>Unlisted</strong>여야 합니다. <strong>Private은 불가</strong>합니다.</td>
+        </tr>
+        <tr>
+          <td><b>퍼가기 허용</b><br><span class="ko">Allow embedding</span></td>
+          <td>세부정보 하단 <span class="chip">Show more</span> → <span class="chip">Allow embedding</span></td>
+          <td>체크되어 <strong>있어야</strong> 합니다. AI가 영상을 읽어오는 데 필요합니다.</td>
+        </tr>
+        <tr>
+          <td><b>연령 제한</b><br><span class="ko">Age restriction</span></td>
+          <td>세부정보 하단 <span class="chip">Age restriction</span></td>
+          <td>성인 제한이 <strong>해제</strong>되어 있어야 합니다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout danger">
+    <div class="ico">!</div>
+    <div><b>이 팝업이 뜨면 위 4가지를 확인하세요</b>
+      <span class="chip">Please try again after saving, making the video public, allowing embedding, or lifting the adult restriction</span><br>
+      <span class="ko">저장, 영상 공개, 퍼가기 허용 또는 성인 제한 해제 후 다시 시도해 주세요.</span></div>
+  </div>
+
+  <div class="callout tip">
+    <div class="ico">✓</div>
+    <div><b>실무 팁</b>네 가지 중 <strong>Allow embedding</strong>이 가장 자주 걸립니다.
+      기본값이 켜져 있지만 일부 채널은 일괄 설정으로 꺼둔 경우가 있습니다.
+      크리에이터 온보딩 시 <strong>이 항목부터 확인</strong>하도록 안내해 주세요.</div>
+  </div>
+</section>
+
+<!-- ============================ 3 ============================ -->
+<section class="chap" id="s3">
+  <div class="sec-head">
+    <div class="sec-no">3</div>
+    <h2 class="sec-title">AEDI-V 패널 살펴보기</h2>
+  </div>
+  <p class="sec-desc">조건이 모두 맞으면 화면 오른쪽에 AEDI-V 패널이 자동으로 나타납니다.</p>
+
+  <figure class="shot">
+    <img src="shots/10-panel_en.png" alt="YouTube Studio 동영상 세부정보 페이지 오른쪽에 나타난 AEDI-V 패널">
+    <figcaption>영상 세부정보 페이지 오른쪽에 나타나는 <b>AEDI-V 패널</b> ·
+      맨 아래 검은 <b>Auto product matching</b> 버튼이 분석 시작 버튼입니다</figcaption>
+  </figure>
+
+  <h3>패널에 표시되는 항목</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:32%">항목</th><th>의미</th></tr></thead>
+      <tbody>
+        <tr><td><b>Subscribed / 요금제 이름</b><br><span class="ko">구독 중 · 플랜</span></td><td>현재 이용 중인 요금제입니다. 무료 체험 중에는 <strong>Try it for free and then subscribe.</strong>로 표시됩니다.</td></tr>
+        <tr><td><b>Remaining credits</b><br><span class="ko">남은 크레딧</span></td><td>이번 달에 분석할 수 있는 <strong>영상 길이의 총합</strong>입니다. 분·초로 표시됩니다.</td></tr>
+        <tr><td><b>Usage period</b> / <b>Expiration date</b><br><span class="ko">사용 기간 · 만료일</span></td><td>현재 크레딧을 쓸 수 있는 기간입니다.</td></tr>
+        <tr><td><b>Next billing date</b><br><span class="ko">다음 결제일</span></td><td>다음 자동 결제가 이루어지는 날짜입니다.</td></tr>
+        <tr><td><b>Extra credits</b><br><span class="ko">추가 크레딧</span></td><td>별도로 충전한 크레딧입니다. 기본 크레딧과 <strong>따로 표시</strong>되며 유효기간이 있습니다. (6장 참고)</td></tr>
+        <tr><td><b>Auto product matching</b><br><span class="ko">제품 자동 매칭</span></td><td>누르면 <strong>AI 분석이 시작</strong>됩니다. 이 시점에 크레딧이 차감됩니다.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>왼쪽 위 메뉴 <span class="chip">☰</span></h3>
+  <p>패널 왼쪽 위 햄버거 아이콘을 누르면 아래 메뉴가 열립니다.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:32%">메뉴</th><th>하는 일</th></tr></thead>
+      <tbody>
+        <tr><td><b>My Account</b> <span class="ko">내 계정</span></td><td>구독 정보 페이지로 이동합니다. 구독 상태 확인, 플랜 변경, 결제 카드 변경, 구독 해지, 회원 탈퇴를 여기서 처리합니다.</td></tr>
+        <tr><td><b>Payment</b> <span class="ko">결제</span></td><td>요금제 목록과 추가 크레딧 충전 화면입니다.</td></tr>
+        <tr><td><b>Product tag history</b> <span class="ko">제품 태그 내역</span></td><td>지금까지 태그한 제품 내역을 확인합니다.</td></tr>
+        <tr><td><b>Event</b> <span class="ko">이벤트</span></td><td>진행 중인 이벤트 페이지입니다.</td></tr>
+        <tr><td><b>Tutorial</b> <span class="ko">튜토리얼</span></td><td>확장 안에 내장된 사용법 안내를 다시 봅니다. 500명 이상은 6장, 500명 미만은 5장으로 구성됩니다.</td></tr>
+        <tr><td><b>QnA</b> <span class="ko">문의하기</span></td><td>채팅 상담 창이 열립니다.</td></tr>
+        <tr><td><b>Amazon Associates ID</b> <span class="tag-b">500명 미만만</span></td><td>등록한 제휴 ID를 확인하고 변경합니다.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="shot">
+    <img src="shots/11-menu_en.png" alt="AEDI-V 패널의 햄버거 메뉴를 눌러 펼친 MENU 목록">
+    <figcaption>왼쪽 위 <b>☰</b>를 누르면 나타나는 <b>MENU</b> ·
+      왼쪽 위 <b>←</b> 화살표로 패널로 돌아옵니다</figcaption>
+  </figure>
+
+  <div class="callout info">
+    <div class="ico">i</div>
+    <div><b>문의 연락처</b>패널 맨 아래에 <span class="chip">Got a question? aisum@aisum.com</span>이 항상 표시됩니다.</div>
+  </div>
+</section>
+
+<!-- ============================ 4 ============================ -->
+<section class="chap" id="s4">
+  <div class="sec-head">
+    <div class="sec-no a">4</div>
+    <h2 class="sec-title">구독자 500명 이상 — 제품 태그 <span class="tag-a">YouTube Shopping</span></h2>
+  </div>
+  <p class="sec-desc">YouTube Shopping 제휴가 활성화된 채널의 사용법입니다. 해당하지 않으면 5장으로 넘어가세요.</p>
+
+  <h3>처음 시작 화면 — 분석 약관에 동의</h3>
+  <p>로그인 후 영상 세부정보 페이지에 처음 들어가면 패널 위에 동의 안내가 겹쳐 나타납니다.
+    <span class="chip">Confirm</span> <span class="ko">(확인)</span>을 누르면 바로 사용할 수 있습니다.
+    <strong>Amazon Associates ID 입력란은 나타나지 않습니다.</strong></p>
+  <ul class="vlist">
+    <li><b>YouTube video analysis</b> <span class="ko">— 유튜브 동영상 분석</span></li>
+    <li><b>Shorts video analysis</b> <span class="ko">— 쇼츠 동영상 분석</span></li>
+  </ul>
+
+  <h3>태그할 영상 선택</h3>
+  <p>YouTube Studio의 콘텐츠 목록에 안내 문구
+    <span class="chip">Click on a video to tag products…</span>가 나타납니다.
+    제품을 태그할 <strong>공개된 영상</strong>을 클릭해 세부정보 페이지로 들어갑니다.</p>
+
+  <div class="howto a">
+    <div class="howto-title"><span class="tag">STEP A</span>제품을 영상에 태그하기</div>
+    <p class="howto-lead">분석 시작부터 저장까지 6단계입니다.</p>
+    <ul class="howto-steps">
+      <li class="hstep">
+        <div class="num">1</div>
+        <div class="box">
+          <b><span class="chip">Auto product matching</span> 클릭</b>
+          <p>패널 아래 검은 버튼을 누르면 AI 영상 분석이 시작됩니다. 이때 크레딧이 차감됩니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">2</div>
+        <div class="box">
+          <b>분석이 끝날 때까지 기다리기</b>
+          <p><span class="chip">Analyzing AI video</span> 창에 진행률이 표시됩니다.
+            <strong>이 창을 닫거나 다른 페이지로 이동해도 분석은 계속됩니다.</strong>
+            진행률은 브라우저 오른쪽 위 AEDI-V 아이콘에서 다시 확인할 수 있고,
+            완료되면 <strong>바탕화면 알림</strong>으로 알려줍니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">3</div>
+        <div class="box">
+          <b>노출 방식 선택 — 탭 두 개</b>
+          <ul class="vlist">
+            <li><b>Apply Timestamp</b> <span class="ko">(타임스탬프 적용)</span> — 영상의 <strong>특정 구간</strong>에만 제품을 노출합니다. YouTube가 권장하는 방식입니다.</li>
+            <li><b>Apply to entire video</b> <span class="ko">(동영상 전체 적용)</span> — 영상 <strong>전체 구간</strong>에 제품을 노출합니다.</li>
+          </ul>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">4</div>
+        <div class="box">
+          <b>제품 선택</b>
+          <p>제품 카드를 클릭하면 선택됩니다. 다시 누르면 해제됩니다.
+            카드마다 <span class="chip">Commission</span> 예상 수수료가 표시되며,
+            <span class="chip">By similarity</span> <span class="ko">(유사도 순)</span> /
+            <span class="chip">By Commission</span> <span class="ko">(커미션 순)</span>으로 정렬을 바꿀 수 있습니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">5</div>
+        <div class="box">
+          <b><span class="chip">Apply</span> <span class="ko">(적용하기)</span> 클릭</b>
+          <p>선택을 마치면 아래 <strong>Apply</strong> 버튼을 누릅니다.
+            AEDI-V가 YouTube 제품 검색과 태그 등록을 <strong>자동으로 처리</strong>합니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">6</div>
+        <div class="box">
+          <b>결과 확인</b>
+          <p>세부정보 페이지의 설명란 아래 제품 영역에 <strong>등록된 제품 개수</strong>와
+            제품 썸네일이 표시됩니다.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout warn">
+    <div class="ico">!</div>
+    <div><b>제품은 5개 내외가 가장 효과적입니다</b>
+      최대 <strong>15개</strong>까지 선택할 수 있지만, 화면에도
+      <span class="chip">For the best results, use five or fewer product tags</span>라고 안내됩니다.
+      <strong>태그가 많아질수록 추천 정확도와 전환율이 떨어집니다.</strong>
+      크리에이터에게 “많이 거는 것보다 잘 맞는 것 몇 개”를 강조해 주세요.</div>
+  </div>
+
+  <figure class="shot">
+    <img src="shots/20-analyzing_en.png" alt="AI 분석 진행률이 표시된 화면">
+    <figcaption><b>2단계</b> · <b>Analyzing AI video</b> · 진행률(%)이 표시됩니다 ·
+      <b>Analysis continues even if you close the screen</b> — 창을 닫아도 분석은 계속됩니다</figcaption>
+  </figure>
+
+  <figure class="shot">
+    <img src="shots/21-apply-entire_en.png" alt="Apply to entire video 탭에서 제품 목록을 선택하는 화면">
+    <figcaption><b>3~4단계</b> · <b>Apply to entire video</b> 탭 · 구간 구분 없이 한 목록으로 표시됩니다 ·
+      제품마다 <b>Commission</b> 예상 수익이, 위에는 <b>Selected products</b>로 고른 개수가 표시됩니다</figcaption>
+  </figure>
+
+  <figure class="shot">
+    <img src="shots/22-tagged_en.png" alt="제품 태그가 등록 완료된 세부정보 화면">
+    <figcaption><b>6단계</b> · 태그 완료 · 설명란 아래 <b>제품 개수</b>와 태그된 제품 썸네일이 나란히 표시됩니다</figcaption>
+  </figure>
+</section>
+
+<!-- ============================ 5 ============================ -->
+<section class="chap" id="s5">
+  <div class="sec-head">
+    <div class="sec-no b">5</div>
+    <h2 class="sec-title">구독자 500명 미만 — 설명란 링크 <span class="tag-b">Amazon Associates</span></h2>
+  </div>
+  <p class="sec-desc">YouTube Shopping을 아직 사용할 수 없는 채널의 사용법입니다.</p>
+
+  <p>큰 흐름은 4장과 같습니다. <strong>다른 점은 두 가지</strong>입니다 —
+    타임스탬프 구간 지정이 없고, 결과가 <strong>영상 설명란에 텍스트로 삽입</strong>됩니다.</p>
+
+  <h3>처음 시작 화면 — 약관 동의와 Amazon Associates ID</h3>
+  <p>로그인 후 영상 세부정보 페이지에 처음 들어가면 아래 <b>시작 화면</b>이 열립니다.
+    제품 태그를 쓸 수 없는 채널에만 나타나는 화면으로, <strong>약관 동의와 제휴 ID 입력을 한 번에</strong> 처리합니다.</p>
+  <ul class="vlist">
+    <li><b>Amazon Associates</b> 칸에 제휴 ID를 입력합니다.
+      ID는 Amazon Associates 페이지에서 확인할 수 있으며 <strong><span class="chip">-20</span>으로 끝나는 형식</strong>입니다.</li>
+    <li>동의 항목 두 가지는 <strong>둘 다 필수</strong>입니다 —
+      <b>YouTube video analysis</b> <span class="ko">(유튜브 동영상 분석)</span>,
+      <b>Shorts video analysis</b> <span class="ko">(쇼츠 동영상 분석)</span>.
+      <span class="chip">Agree to all</span> <span class="ko">(전체 동의)</span>로 한 번에 체크됩니다.</li>
+    <li>마지막으로 <span class="chip">Start</span> <span class="ko">(시작하기)</span>를 누르면 준비가 끝납니다.</li>
+  </ul>
+
+  <figure class="shot">
+    <img src="shots/01-onboarding_en.png" alt="Amazon Associates ID 입력란과 약관 동의 항목이 있는 시작 화면">
+    <figcaption>구독자 <b>500명 미만</b> 채널에서 처음 시작할 때 열리는 화면 ·
+      위쪽 안내에 <b>Can be activated with 500 or more subscribers</b>로 조건이 적혀 있습니다 ·
+      구독자가 늘어 제휴가 활성화되면 이 화면 대신 4장의 흐름으로 바뀝니다</figcaption>
+  </figure>
+
+  <div class="callout warn">
+    <div class="ico">!</div>
+    <div><b>Amazon Associates ID는 정확히 입력해 주세요</b>
+      AEDI-V는 입력된 ID를 기준으로 제휴 URL을 생성합니다.
+      <strong>ID를 잘못 입력하면 수익이 집계되지 않으며, 이에 대해 회사는 책임지지 않습니다.</strong>
+      입력 후 담당자가 한 번 더 확인하도록 안내해 주세요.
+      ID는 나중에 메뉴에서 변경할 수 있습니다.</div>
+  </div>
+
+  <div class="howto b">
+    <div class="howto-title"><span class="tag">STEP B</span>설명란에 제품 링크 넣기</div>
+    <p class="howto-lead">분석 시작부터 삽입까지 5단계입니다.</p>
+    <ul class="howto-steps">
+      <li class="hstep">
+        <div class="num">1</div>
+        <div class="box">
+          <b><span class="chip">Auto product matching</span> 클릭</b>
+          <p>패널 아래 검은 버튼을 눌러 AI 분석을 시작합니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">2</div>
+        <div class="box">
+          <b>분석 대기</b>
+          <p>진행률이 표시됩니다. 창을 닫아도 분석은 계속되며 완료 시 알림이 옵니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">3</div>
+        <div class="box">
+          <b><span class="chip">AI Recommended Products</span>에서 제품 선택</b>
+          <p>AI가 추천한 제품 목록이 하나의 그리드로 표시됩니다.
+            카드를 클릭해 선택하고, 정렬은 유사도 순 / 커미션 순으로 바꿀 수 있습니다.
+            여기서도 <strong>5개 내외</strong>를 권장합니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">4</div>
+        <div class="box">
+          <b><span class="chip">Apply</span> 클릭</b>
+          <p>선택을 마치고 아래 <strong>Apply</strong> 버튼을 누르면
+            <strong>영상 설명란에 자동으로 삽입</strong>됩니다.</p>
+        </div>
+      </li>
+      <li class="hstep">
+        <div class="num">5</div>
+        <div class="box">
+          <b>설명란 확인 후 저장</b>
+          <p>설명란 맨 아래에 <span class="chip">AI-recommended product list ▼</span> 제목과 함께
+            <strong>제품명 + 구매 링크</strong>가 들어갑니다.
+            내용을 확인한 뒤 오른쪽 위 <span class="chip">Save</span> 버튼으로 저장합니다.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <figure class="shot">
+    <img src="shots/tutorial_a2_en.png" alt="AI 분석 진행률이 표시된 화면">
+    <figcaption><b>2단계</b> · 분석 진행률 표시 · <b>창을 닫아도 분석은 계속됩니다</b></figcaption>
+  </figure>
+
+  <figure class="shot">
+    <img src="shots/tutorial_a4_en.png" alt="AI Recommended Products 목록에서 제품을 선택하고 Apply를 누르는 화면">
+    <figcaption><b>3~4단계</b> · <b>AI Recommended Products</b> · 구간 구분 없이 한 목록으로 표시되며,
+      아래 <b>Apply</b>를 누르면 설명란에 링크가 추가됩니다</figcaption>
+  </figure>
+
+  <figure class="shot">
+    <img src="shots/tutorial_a5_en.png" alt="설명란에 AI 추천 제품 목록과 링크가 삽입된 결과 화면">
+    <figcaption><b>5단계</b> · 설명란에 삽입된 결과 · <b>AI-recommended product list ▼</b> 아래로 제품명과 링크가 나열됩니다</figcaption>
+  </figure>
+
+  <div class="callout warn">
+    <div class="ico">!</div>
+    <div><b>저장 후 이 안내가 뜨면</b>
+      <span class="chip">To make external links clickable, first complete a one-time verification</span><br>
+      <span class="ko">외부 링크를 클릭할 수 있게 하려면 우선 일회성 인증을 완료하세요.</span><br>
+      YouTube 정책상 <strong>채널에서 외부 링크 인증을 한 번 완료</strong>해야 시청자가 링크를 누를 수 있습니다.
+      인증 전에는 링크가 텍스트로만 보입니다. 크리에이터에게 <strong>이 인증을 먼저 끝내도록</strong> 안내해 주세요.</div>
+  </div>
+
+  <div class="callout tip">
+    <div class="ico">✓</div>
+    <div><b>설명란 원본은 지워지지 않습니다</b>
+      기존 설명 글 <strong>아래에 추가</strong>되는 방식이므로 크리에이터가 써둔 내용은 그대로 유지됩니다.</div>
+  </div>
+</section>
+
+<!-- ============================ 6 ============================ -->
+<section class="chap" id="s6">
+  <div class="sec-head">
+    <div class="sec-no">6</div>
+    <h2 class="sec-title">크레딧과 요금제</h2>
+  </div>
+  <p class="sec-desc">정산·CS 문의가 가장 많은 영역입니다. 기준을 정확히 알아두세요.</p>
+
+  <h3>크레딧이란</h3>
+  <p>크레딧은 <strong>분석할 수 있는 영상 길이</strong>입니다. 분·초 단위로 표시되며,
+    10분짜리 영상을 분석하면 크레딧 10분이 소모되는 방식입니다.
+    따라서 <strong>남은 크레딧이 영상 길이보다 짧으면 분석을 시작할 수 없습니다.</strong></p>
+
+  <div class="callout danger">
+    <div class="ico">!</div>
+    <div><b>크레딧이 영상 길이보다 부족할 때</b>
+      패널에 <span class="chip">Not enough credits</span>와 함께 <strong>얼마나 모자란지</strong>가 표시되고
+      <strong>분석 버튼이 비활성화</strong>됩니다. 크레딧을 충전하거나 상위 요금제로 변경해야 합니다.</div>
+  </div>
+
+  <h3>부족 알림 기준</h3>
+  <p>아래 기준에 걸리면 해당 수치가 <strong>빨간색</strong>으로 바뀌고 구독·충전 버튼이 강조됩니다.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:34%">항목</th><th style="width:26%">경고 기준</th><th>화면 변화</th></tr></thead>
+      <tbody>
+        <tr><td><b>Remaining credits</b> <span class="ko">남은 크레딧</span></td><td><b>5분 00초 이하</b></td><td>크레딧 숫자가 빨간색으로 표시됩니다</td></tr>
+        <tr><td><b>Usage period</b> <span class="ko">사용 기간</span></td><td><b>3일 이하</b></td><td>만료일이 빨간색으로 표시됩니다</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>크레딧이 차감되는 경우 / 되지 않는 경우</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:46%">상황</th><th>크레딧</th></tr></thead>
+      <tbody>
+        <tr><td>정상적으로 분석이 완료된 경우</td><td><b style="color:var(--danger)">차감됩니다</b></td></tr>
+        <tr><td>매칭된 제품이 하나도 없는 경우 <span class="ko">(No products matched)</span></td><td><b style="color:var(--success)">차감되지 않습니다</b></td></tr>
+        <tr><td>분석에 실패한 경우 <span class="ko">(No result data)</span></td><td><b style="color:var(--success)">차감되지 않습니다</b></td></tr>
+        <tr><td><strong>이미 분석한 영상</strong>을 다시 여는 경우</td><td><b style="color:var(--success)">차감되지 않습니다</b></td></tr>
+        <tr><td>적용하지 않고 닫았다가 <strong>나중에 다시 태그</strong>하는 경우</td><td><b style="color:var(--success)">차감되지 않습니다</b></td></tr>
+        <tr><td>품절 제품을 <strong>다른 제품으로 교체</strong>하는 경우</td><td><b style="color:var(--success)">차감되지 않습니다</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="ico">✓</div>
+    <div><b>한 번 분석하면 계속 재사용할 수 있습니다</b>
+      크레딧은 <strong>영상 1건을 처음 분석할 때 한 번만</strong> 소모됩니다.
+      이후 같은 영상에서 제품을 바꾸거나 추가하는 작업은 <strong>모두 무료</strong>입니다.
+      크리에이터가 “태그를 잘못 걸면 크레딧이 또 나가나요?”라고 물으면 <strong>아니오</strong>가 정답입니다.</div>
+  </div>
+
+  <h3>요금제 <span class="ko">메뉴 › Payment</span></h3>
+  <p>메뉴의 <span class="chip">Payment</span>에서 요금제를 고르고 결제합니다.
+    아래는 <strong>2026년 8월 기준 미국 요금제</strong>이며 <strong>모두 세금 별도</strong>입니다.
+    포함 크레딧은 <strong>한 달에 분석할 수 있는 영상 길이의 총합</strong>입니다.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:28%">요금제</th><th style="width:26%">월 요금</th><th>포함 크레딧</th></tr></thead>
+      <tbody>
+        <tr><td><b>Starter</b></td><td>$9.80</td><td><b>30:00</b> <span class="ko">30분</span></td></tr>
+        <tr><td><b>Standard</b></td><td>$17.80</td><td><b>1:00:00</b> <span class="ko">1시간</span></td></tr>
+        <tr><td><b>Pro</b></td><td>$32.00</td><td><b>2:00:00</b> <span class="ko">2시간</span></td></tr>
+        <tr><td><b>Studio</b></td><td>$99.00</td><td><b>7:00:00</b> <span class="ko">7시간</span></td></tr>
+        <tr><td><b>Studio+</b></td><td>$230.00</td><td><b>18:00:00</b> <span class="ko">18시간</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="shot">
+    <img src="shots/60-payment_en.png" alt="Payment 화면의 요금제 다섯 종류 목록">
+    <figcaption>메뉴 › <b>Payment</b> · 요금제마다 <b>Upgrade</b> 버튼으로 변경합니다 ·
+      <b>All plans are exclusive of tax</b> — 표시 금액은 세금 별도입니다</figcaption>
+  </figure>
+
+  <h3>추가 크레딧 <span class="ko">Extra credits</span></h3>
+  <ul class="vlist">
+    <li><b>구독 중인 사용자만</b> 충전할 수 있습니다. 무료 체험 중에는 충전이 불가합니다.</li>
+    <li>같은 <span class="chip">Payment</span> 화면 아래쪽 <b>Top-up additional credit</b>에서 충전합니다.
+      <b>5분 단위로 $2.00</b>이며 <b>−</b> / <b>+</b>로 분량을 조절합니다. 여기도 세금 별도입니다.</li>
+    <li>유효기간은 <b>충전일로부터 3개월</b>입니다.</li>
+    <li>여러 번 충전하면 <b>유효기간이 가까운 것부터 먼저 소진</b>됩니다.
+      패널에 남은 크레딧과 만료일이 목록으로 표시됩니다.</li>
+    <li>기본 크레딧과 <b>합산되어</b> 분석 가능 여부를 판단합니다.</li>
+  </ul>
+
+  <figure class="shot">
+    <img src="shots/61-topup_en.png" alt="Top-up additional credit 충전 영역과 프로모션 코드 입력란">
+    <figcaption><b>Top-up additional credit</b> · <b>Credit validity : 3 months</b>로 유효기간이 함께 표시됩니다 ·
+      아래 <b>Promotion code</b> 칸에 프로모션 코드를 넣고 <b>Apply</b>를 누르면 적용됩니다</figcaption>
+  </figure>
+
+  <h3>구독 관리 <span class="ko">메뉴 › My Account</span></h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:30%">작업</th><th>동작 방식</th></tr></thead>
+      <tbody>
+        <tr><td><b>요금제 변경</b></td><td>결제 페이지에서 변경합니다. <strong>다음 결제일부터 적용</strong>되며, 그때까지는 현재 요금제가 유지됩니다.</td></tr>
+        <tr><td><b>결제 카드 변경</b></td><td>결제 대행사(Stripe) 창이 열립니다. <strong>다음 결제부터 적용</strong>됩니다.</td></tr>
+        <tr><td><b>구독 해지</b></td><td>즉시 중단이 아니라 <strong>다음 결제일에 해지</strong>됩니다. 남은 기간은 그대로 사용할 수 있습니다.</td></tr>
+        <tr><td><b>해지 취소</b></td><td>해지 예정 상태에서 되돌릴 수 있습니다. 구독 정보 화면에 <strong>해지 예정 안내</strong>와 함께 취소 버튼이 표시됩니다.</td></tr>
+        <tr><td><b>회원 탈퇴</b></td><td>안내 확인 → 사유 선택 → 동의 체크 후 진행합니다. <strong>구독 중이라면 즉시 탈퇴되지 않고</strong>, 자동 해지가 예약된 뒤 <strong>구독 만료 시점에 탈퇴 처리</strong>됩니다.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <div class="ico">i</div>
+    <div><b>해지 예정 상태에서는 일부 버튼이 잠깁니다</b>
+      구독 해지를 신청한 뒤에는 <strong>요금제 변경과 결제 카드 변경 버튼이 비활성화</strong>됩니다.
+      다시 바꾸려면 먼저 <strong>해지를 취소</strong>해야 합니다.</div>
+  </div>
+
+  <div class="callout warn">
+    <div class="ico">!</div>
+    <div><b>요금제 표는 안내용 참고 자료입니다</b>
+      플랜 구성과 가격은 <strong>지역·시점에 따라 달라집니다.</strong> 위 표는 2026년 8월 미국 기준이며,
+      실제 안내와 결제는 <strong>메뉴 › Payment 화면의 최신 정보를 기준</strong>으로 해주세요.
+      환불 조건은 계약에 따라 다르므로 담당자에게 확인이 필요합니다.</div>
+  </div>
+</section>
+
+<!-- ============================ 7 ============================ -->
+<section class="chap" id="s7">
+  <div class="sec-head">
+    <div class="sec-no">7</div>
+    <h2 class="sec-title">품절</h2>
+  </div>
+  <p class="sec-desc">태그한 제품이 팔려 나가면 링크는 남고 수익만 사라집니다. 그래서 따로 다룹니다.</p>
+
+  <h3>품절 제품 알림</h3>
+  <p>태그해 둔 제품이 품절되면 <strong>자동으로 알림</strong>이 표시됩니다. 하루 한 번 확인합니다.</p>
+  <ul class="vlist">
+    <li><b>The product you tagged is out of stock.</b> <span class="ko">— 태그하신 제품이 품절되었습니다</span></li>
+    <li><b>You can change the product tag without using up credits.</b> <span class="ko">— 크레딧 소진 없이 교체 가능합니다</span></li>
+    <li>버튼: <b>Replace Product</b> <span class="ko">— 제품 교체하기</span></li>
+  </ul>
+
+  <figure class="shot">
+    <img src="shots/70-soldout_en.png" alt="품절 제품 알림 팝업과 Replace Product 버튼">
+    <figcaption>품절 알림 · 어떤 영상의 어떤 제품이 품절인지 <b>영상 제목과 제품 이미지</b>로 함께 보여줍니다 ·
+      아래 <b>Replace Product</b>를 누르면 제품 목록이 열려 다른 제품으로 바꿀 수 있습니다 ·
+      설명란 아래 태그 목록에서도 품절 제품이 <b>빨간 테두리</b>로 표시됩니다</figcaption>
+  </figure>
+
+  <h3>교체하는 방법</h3>
+  <ol class="nlist">
+    <li>알림의 <span class="chip">Replace Product</span>를 누릅니다.</li>
+    <li>처음 태그할 때와 같은 <strong>제품 목록</strong>이 열립니다. 대신 넣을 제품을 고릅니다.</li>
+    <li><span class="chip">Apply</span> <span class="ko">(적용하기)</span>를 누르면 교체가 끝납니다.</li>
+  </ol>
+
+  <div class="callout tip">
+    <div class="ico">✓</div>
+    <div><b>수익 누수를 막는 기능입니다</b>
+      품절된 제품 링크는 클릭돼도 수익이 발생하지 않습니다.
+      이 알림이 뜨면 <strong>가능한 빨리 교체</strong>하도록 안내해 주세요.
+      <strong>교체에는 크레딧이 들지 않습니다.</strong></div>
+  </div>
+</section>
+
+<!-- ============================ 8 ============================ -->
+<section class="chap" id="s8">
+  <div class="sec-head">
+    <div class="sec-no">8</div>
+    <h2 class="sec-title">알아두면 좋은 기능</h2>
+  </div>
+  <p class="sec-desc">문의를 줄여 주는 기능들입니다. 온보딩 때 함께 안내하면 좋습니다.</p>
+
+  <h3>이미 분석한 영상 다시 활용하기</h3>
+  <p>한 번 분석한 영상의 세부정보 페이지에 다시 들어가면, 분석 버튼 대신 아래 안내가 표시됩니다.</p>
+  <ul class="vlist">
+    <li><b>This video has been analyzed</b> <span class="ko">— 분석이 완료된 영상입니다</span></li>
+    <li><b>Edit product tags without using up credits</b> <span class="ko">— 크레딧 소진 없이 제품 태그를 수정하세요</span></li>
+    <li>버튼: <b>Retrieve previous matching results</b> <span class="ko">— 이전 매칭 결과 불러오기</span></li>
+  </ul>
+  <p>이 버튼을 누르면 <strong>크레딧 소모 없이</strong> 이전 분석 결과를 다시 불러와 제품을 교체하거나 추가할 수 있습니다.</p>
+
+  <h3>분석 진행 상황 확인</h3>
+  <p>분석 중에 YouTube Studio를 벗어나도 됩니다.
+    다른 웹사이트를 보고 있어도 <strong>진행 상황 팝업</strong>이 표시되며,
+    <strong>분석 완료된 영상</strong>과 <strong>분석 중인 영상</strong>의 개수를 확인할 수 있습니다.
+    완료되면 <strong>바탕화면 알림</strong>이 뜨고, 알림의 버튼을 누르면 해당 영상 편집 페이지로 바로 이동합니다.</p>
+
+  <h3>쇼츠와 짧은 영상</h3>
+  <div class="callout info">
+    <div class="ico">i</div>
+    <div><b>1분 미만 영상과 Shorts는 타임스탬프를 쓸 수 없습니다</b>
+      화면에도 <span class="chip">Videos under 1 minute or Shorts cannot use timestamps.</span>로 안내됩니다.
+      이 경우 <strong>Apply to entire video</strong> 탭으로 자동 전환되며, 타임스탬프 탭은 비활성화됩니다.
+      기능 오류가 아니라 <strong>정상 동작</strong>입니다.</div>
+  </div>
+
+  <h3>제품 이미지가 보이지 않을 때</h3>
+  <p>매칭 결과에서 제품 이미지가 비어 보인다면 <strong>광고 차단 확장 프로그램(AdBlock 등)</strong>이 원인입니다.
+    화면 안내는 <span class="chip">If you can't see the image, please disable your ad blocker</span>입니다.
+    해당 사이트에서 광고 차단을 꺼주세요.</p>
+</section>
+
+<!-- ============================ 9 ============================ -->
+<section class="chap" id="s9">
+  <div class="sec-head">
+    <div class="sec-no">9</div>
+    <h2 class="sec-title">자주 묻는 질문</h2>
+  </div>
+  <p class="sec-desc">문의가 들어왔을 때 이 순서대로 확인하면 대부분 해결됩니다.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:38%">이런 경우</th><th>이렇게 확인하세요</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>AEDI-V 패널이 나타나지 않습니다.</b></td>
+          <td>먼저 <strong>영상 세부정보(수정) 페이지</strong>가 맞는지 확인하세요. 목록 화면에서는 뜨지 않습니다.
+            페이지가 맞다면 <strong>2장의 영상 조건 4가지</strong>를 확인합니다. 그래도 안 되면 페이지를 새로고침하세요.</td>
+        </tr>
+        <tr>
+          <td><b>분석 버튼이 눌리지 않습니다.</b></td>
+          <td><strong>남은 크레딧이 영상 길이보다 짧은 경우</strong>입니다. 패널에 부족한 시간이 표시됩니다.
+            크레딧을 충전하거나 요금제를 변경해 주세요. (6장)</td>
+        </tr>
+        <tr>
+          <td><b>분석했는데 제품이 하나도 안 나옵니다.</b></td>
+          <td>영상에서 식별 가능한 제품을 찾지 못한 경우입니다. <strong>크레딧은 차감되지 않습니다.</strong>
+            제품이 화면에 뚜렷하게 보이는 영상일수록 매칭률이 높습니다.</td>
+        </tr>
+        <tr>
+          <td><b>타임스탬프 탭이 비활성화되어 있습니다.</b></td>
+          <td>영상이 <strong>1분 미만이거나 Shorts</strong>인 경우입니다. 정상 동작이며 전체 적용으로 진행하면 됩니다.</td>
+        </tr>
+        <tr>
+          <td><b>제품 이미지가 안 보입니다.</b></td>
+          <td><strong>광고 차단 확장 프로그램</strong>을 꺼주세요.</td>
+        </tr>
+        <tr>
+          <td><b>설명란 링크를 눌러도 이동이 안 됩니다.</b></td>
+          <td>YouTube의 <strong>외부 링크 일회성 인증</strong>이 완료되지 않은 상태입니다. 채널에서 인증을 먼저 완료해야 합니다. (5장)</td>
+        </tr>
+        <tr>
+          <td><b>제품을 더 선택하려는데 안 됩니다.</b></td>
+          <td>한 영상에 <strong>최대 15개</strong>까지만 선택할 수 있습니다. 다만 <strong>5개 내외</strong>가 가장 효과적입니다.</td>
+        </tr>
+        <tr>
+          <td><b>다시 태그하면 크레딧이 또 나가나요?</b></td>
+          <td><strong>아니오.</strong> 같은 영상은 처음 분석할 때만 크레딧이 차감됩니다. 이후 수정·교체·추가는 모두 무료입니다.</td>
+        </tr>
+        <tr>
+          <td><b>화면이 멈춘 것 같습니다.</b></td>
+          <td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">R</span>
+            (Mac은 <span class="kbd">Cmd</span>+<span class="kbd">Shift</span>+<span class="kbd">R</span>)로 강력 새로고침 후 다시 시도하세요.</td>
+        </tr>
+        <tr>
+          <td><b>구독을 해지했는데 바로 못 쓰게 되나요?</b></td>
+          <td>아닙니다. <strong>남은 기간은 그대로 사용</strong>할 수 있고 다음 결제일에 해지됩니다. 그전에 해지를 취소할 수도 있습니다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="ico">✓</div>
+    <div><b>그래도 해결되지 않으면</b>
+      패널 메뉴의 <span class="chip">QnA</span>로 문의하거나
+      <span class="chip">aisum@aisum.com</span>으로 연락해 주세요.
+      문의 시 <strong>① 채널명 ② 해당 영상 링크 ③ 화면 캡처</strong> 세 가지를 함께 보내주시면 확인이 빠릅니다.</div>
+  </div>
+
+  <div class="doc-end">
+    <span>AEDI-V 크리에이터 사용 가이드</span>
+    <span>확장 v1.2.79 · 2026-08-04</span>
+  </div>
+</section>
+
+</body>
+</html>
