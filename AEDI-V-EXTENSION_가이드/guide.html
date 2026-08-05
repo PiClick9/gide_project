@@ -273,6 +273,35 @@
     background:#fff;break-inside:avoid;
   }
   figure.shot img{display:block;width:100%;height:auto;}
+  .annotated-frame{position:relative;overflow:hidden;}
+  .annotated-frame .focus{
+    position:absolute;box-sizing:border-box;border:2px solid var(--trackA);
+    border-radius:6px;background:rgba(47,128,255,.08);
+    box-shadow:0 0 0 2px rgba(255,255,255,.9),0 2px 9px rgba(47,128,255,.35);
+  }
+  .annotated-frame .anno{
+    position:absolute;display:flex;align-items:center;gap:5px;
+    color:#fff;background:rgba(20,83,190,.94);border:1px solid rgba(255,255,255,.9);
+    border-radius:999px;padding:3px 8px 3px 4px;font-size:9.2px;font-weight:800;
+    line-height:1.2;letter-spacing:-.1px;box-shadow:0 2px 7px rgba(20,50,110,.28);
+    white-space:nowrap;
+  }
+  .annotated-frame .anno .n{
+    display:flex;align-items:center;justify-content:center;width:17px;height:17px;
+    border-radius:50%;background:#fff;color:var(--trackA);font-size:9px;flex:0 0 17px;
+  }
+  .annotated-frame .mark{
+    position:absolute;height:2px;background:var(--trackA);border-radius:2px;
+    box-shadow:0 1px 0 #fff;
+  }
+  .annotated-frame.b .focus{border-color:var(--trackB);background:rgba(255,158,61,.09);box-shadow:0 0 0 2px rgba(255,255,255,.9),0 2px 9px rgba(224,122,26,.35);}
+  .annotated-frame.b .anno{background:rgba(224,122,26,.95);box-shadow:0 2px 7px rgba(120,65,12,.25);}
+  .annotated-frame.b .anno .n{color:#e07a1a;}
+  .annotated-frame.b .mark{background:var(--trackB);}
+  .annotated-frame.p .focus{border-color:var(--primary);background:rgba(124,108,242,.09);box-shadow:0 0 0 2px rgba(255,255,255,.9),0 2px 9px rgba(94,77,210,.35);}
+  .annotated-frame.p .anno{background:rgba(94,77,210,.95);box-shadow:0 2px 7px rgba(55,40,140,.25);}
+  .annotated-frame.p .anno .n{color:var(--primary-600);}
+  .annotated-frame.p .mark{background:var(--primary);}
   figure.shot figcaption{
     padding:7px 11px;font-size:10.6px;color:var(--muted);
     border-top:1px solid var(--line);background:#fafafc;
@@ -466,6 +495,10 @@
           <p>설치가 끝나면 Google 로그인 창이 열립니다.
             <strong>반드시 해당 YouTube 채널을 운영하는 계정</strong>으로 로그인해야 합니다.
             로그인에 성공하면 YouTube Studio의 콘텐츠 목록으로 자동 이동합니다.</p>
+          <figure class="shot" style="max-width:100%">
+            <img src="shots/02-content-list_en.png" alt="로그인 성공 후 자동으로 이동한 YouTube Studio 콘텐츠 목록">
+            <figcaption>로그인 성공 후 열리는 YouTube Studio 콘텐츠 목록 · 안내 문구가 표시된 <b>공개 영상</b>을 클릭해 제품 태그를 시작합니다</figcaption>
+          </figure>
         </div>
       </li>
     </ul>
@@ -543,7 +576,15 @@
   <p class="sec-desc">조건이 모두 맞으면 화면 오른쪽에 AEDI-V 패널이 자동으로 나타납니다.</p>
 
   <figure class="shot">
-    <img src="shots/10-panel_en.png" alt="YouTube Studio 동영상 세부정보 페이지 오른쪽에 나타난 AEDI-V 패널">
+    <div class="annotated-frame p">
+      <img src="shots/10-panel_en.png" alt="YouTube Studio 동영상 세부정보 페이지 오른쪽에 나타난 AEDI-V 패널">
+      <span class="focus" style="left:80.3%;top:.8%;width:18.9%;height:30.5%"></span>
+      <span class="anno" style="left:calc(64.7% - 5px);top:7%"><span class="n">1</span>요금제·기본 크레딧</span>
+      <span class="focus" style="left:80.3%;top:31.6%;width:18.9%;height:30.4%"></span>
+      <span class="anno" style="left:67.3%;top:39%"><span class="n">2</span>추가 크레딧</span>
+      <span class="focus" style="left:83.4%;top:76.8%;width:12.6%;height:6.2%"></span>
+      <span class="anno" style="left:68.3%;top:77%"><span class="n">3</span>AI 분석 시작</span>
+    </div>
     <figcaption>영상 세부정보 페이지 오른쪽에 나타나는 <b>AEDI-V 패널</b> ·
       맨 아래 검은 <b>Auto product matching</b> 버튼이 분석 시작 버튼입니다</figcaption>
   </figure>
@@ -581,7 +622,15 @@
   </div>
 
   <figure class="shot">
-    <img src="shots/11-menu_en.png" alt="AEDI-V 패널의 햄버거 메뉴를 눌러 펼친 MENU 목록">
+    <div class="annotated-frame p">
+      <img src="shots/11-menu_en.png" alt="AEDI-V 패널의 햄버거 메뉴를 눌러 펼친 MENU 목록">
+      <span class="focus" style="left:80.3%;top:.8%;width:18.9%;height:17.8%"></span>
+      <span class="anno" style="left:68.5%;top:6%"><span class="n">1</span>계정·결제</span>
+      <span class="focus" style="left:80.3%;top:18.6%;width:18.9%;height:17.4%"></span>
+      <span class="anno" style="left:calc(62.8% - 5px);top:23%"><span class="n">2</span>내역·이벤트·튜토리얼</span>
+      <span class="focus" style="left:80.3%;top:36%;width:18.9%;height:7.8%"></span>
+      <span class="anno" style="left:69%;top:37%"><span class="n">3</span>문의하기</span>
+    </div>
     <figcaption>왼쪽 위 <b>☰</b>를 누르면 나타나는 <b>MENU</b> ·
       왼쪽 위 <b>←</b> 화살표로 패널로 돌아옵니다</figcaption>
   </figure>
@@ -684,19 +733,38 @@
   </div>
 
   <figure class="shot">
-    <img src="shots/20-analyzing_en.png" alt="AI 분석 진행률이 표시된 화면">
+    <div class="annotated-frame">
+      <img src="shots/20-analyzing_en.png" alt="AI 분석 진행률이 표시된 화면">
+      <span class="focus" style="left:80.25%;top:.7%;width:19%;height:31.2%"></span>
+      <span class="anno" style="left:71.2%;top:2.2%"><span class="n">1</span>분석 진행률 확인</span>
+      <span class="mark" style="left:84.2%;top:25.9%;width:10.2%"></span>
+      <span class="anno" style="left:70.2%;top:33%"><span class="n">2</span>창을 닫아도 분석 계속</span>
+    </div>
     <figcaption><b>2단계</b> · <b>Analyzing AI video</b> · 진행률(%)이 표시됩니다 ·
       <b>Analysis continues even if you close the screen</b> — 창을 닫아도 분석은 계속됩니다</figcaption>
   </figure>
 
   <figure class="shot">
-    <img src="shots/21-apply-entire_en.png" alt="Apply to entire video 탭에서 제품 목록을 선택하는 화면">
+    <div class="annotated-frame">
+      <img src="shots/21-apply-entire_en.png" alt="Apply to entire video 탭에서 제품 목록을 선택하는 화면">
+      <span class="focus" style="left:42.2%;top:4.7%;width:10.3%;height:7.2%"></span>
+      <span class="anno" style="left:52.9%;top:5.2%"><span class="n">1</span>전체 영상 탭 선택</span>
+      <span class="focus" style="left:34.5%;top:52%;width:31%;height:35.5%"></span>
+      <span class="anno" style="left:25.3%;top:54%"><span class="n">2</span>제품 선택</span>
+      <span class="focus" style="left:46.35%;top:94%;width:7.3%;height:4.8%"></span>
+      <span class="anno" style="left:54.2%;top:calc(93% - 8px)"><span class="n">3</span>Apply 클릭</span>
+    </div>
     <figcaption><b>3~4단계</b> · <b>Apply to entire video</b> 탭 · 구간 구분 없이 한 목록으로 표시됩니다 ·
       제품마다 <b>Commission</b> 예상 수익이, 위에는 <b>Selected products</b>로 고른 개수가 표시됩니다</figcaption>
   </figure>
 
   <figure class="shot">
-    <img src="shots/22-tagged_en.png" alt="제품 태그가 등록 완료된 세부정보 화면">
+    <div class="annotated-frame">
+      <img src="shots/22-tagged_en.png" alt="제품 태그가 등록 완료된 세부정보 화면">
+      <span class="focus" style="left:15.35%;top:54.3%;width:35.8%;height:12.5%"></span>
+      <span class="anno" style="left:16%;top:46.8%"><span class="n">1</span>등록된 제품 3개</span>
+      <span class="anno" style="left:36%;top:68%"><span class="n">2</span>제품 썸네일 확인</span>
+    </div>
     <figcaption><b>6단계</b> · 태그 완료 · 설명란 아래 <b>제품 개수</b>와 태그된 제품 썸네일이 나란히 표시됩니다</figcaption>
   </figure>
 </section>
@@ -726,7 +794,15 @@
   </ul>
 
   <figure class="shot">
-    <img src="shots/01-onboarding_en.png" alt="Amazon Associates ID 입력란과 약관 동의 항목이 있는 시작 화면">
+    <div class="annotated-frame b">
+      <img src="shots/01-onboarding_en.png" alt="Amazon Associates ID 입력란과 약관 동의 항목이 있는 시작 화면">
+      <span class="focus" style="left:76%;top:50.2%;width:22.5%;height:6.2%"></span>
+      <span class="anno" style="left:58.8%;top:50.6%"><span class="n">1</span>제휴 ID 입력</span>
+      <span class="focus" style="left:76%;top:66.7%;width:22.5%;height:15.6%"></span>
+      <span class="anno" style="left:58.2%;top:68%"><span class="n">2</span>약관 전체 동의</span>
+      <span class="focus" style="left:83.6%;top:85.3%;width:7.4%;height:5.5%"></span>
+      <span class="anno" style="left:68.8%;top:85.2%"><span class="n">3</span>Start 클릭</span>
+    </div>
     <figcaption>구독자 <b>500명 미만</b> 채널에서 처음 시작할 때 열리는 화면 ·
       위쪽 안내에 <b>Can be activated with 500 or more subscribers</b>로 조건이 적혀 있습니다 ·
       구독자가 늘어 제휴가 활성화되면 이 화면 대신 4장의 흐름으로 바뀝니다</figcaption>
@@ -789,18 +865,33 @@
   </div>
 
   <figure class="shot">
-    <img src="shots/tutorial_a2_en.png" alt="AI 분석 진행률이 표시된 화면">
+    <div class="annotated-frame b">
+      <img src="shots/tutorial_a2_en.png" alt="AI 분석 진행률이 표시된 화면">
+      <span class="focus" style="left:77.15%;top:5.8%;width:21.7%;height:32.2%"></span>
+      <span class="anno" style="left:65.5%;top:6.8%"><span class="n">1</span>분석 진행률 확인</span>
+      <span class="anno" style="left:64%;top:39%"><span class="n">2</span>창을 닫아도 분석 계속</span>
+    </div>
     <figcaption><b>2단계</b> · 분석 진행률 표시 · <b>창을 닫아도 분석은 계속됩니다</b></figcaption>
   </figure>
 
   <figure class="shot">
-    <img src="shots/tutorial_a4_en.png" alt="AI Recommended Products 목록에서 제품을 선택하고 Apply를 누르는 화면">
+    <div class="annotated-frame b">
+      <img src="shots/tutorial_a4_en.png" alt="AI Recommended Products 목록에서 제품을 선택하고 Apply를 누르는 화면">
+      <span class="focus" style="left:34%;top:50%;width:32%;height:30%"></span>
+      <span class="anno" style="left:23%;top:52%"><span class="n">1</span>추천 제품 선택</span>
+      <span class="focus" style="left:46%;top:calc(82.5% + 10px);width:8%;height:7%"></span>
+      <span class="anno" style="left:28.5%;top:82%"><span class="n">2</span>Apply 클릭</span>
+    </div>
     <figcaption><b>3~4단계</b> · <b>AI Recommended Products</b> · 구간 구분 없이 한 목록으로 표시되며,
       아래 <b>Apply</b>를 누르면 설명란에 링크가 추가됩니다</figcaption>
   </figure>
 
   <figure class="shot">
-    <img src="shots/tutorial_a5_en.png" alt="설명란에 AI 추천 제품 목록과 링크가 삽입된 결과 화면">
+    <div class="annotated-frame b">
+      <img src="shots/tutorial_a5_en.png" alt="설명란에 AI 추천 제품 목록과 링크가 삽입된 결과 화면">
+      <span class="focus" style="left:calc(18% - 10px);top:29%;width:38%;height:41%"></span>
+      <span class="anno" style="left:18.8%;top:21%"><span class="n">1</span>제품명과 구매 링크 확인</span>
+    </div>
     <figcaption><b>5단계</b> · 설명란에 삽입된 결과 · <b>AI-recommended product list ▼</b> 아래로 제품명과 링크가 나열됩니다</figcaption>
   </figure>
 
@@ -893,7 +984,11 @@
   </div>
 
   <figure class="shot">
-    <img src="shots/60-payment_en.png" alt="Payment 화면의 요금제 다섯 종류 목록">
+    <div class="annotated-frame p">
+      <img src="shots/60-payment_en.png" alt="Payment 화면의 요금제 다섯 종류 목록">
+      <span class="focus" style="left:18.3%;top:38.2%;width:62.7%;height:34.8%"></span>
+      <span class="anno" style="left:12%;top:33%"><span class="n">1</span>요금제·가격 비교</span>
+    </div>
     <figcaption>메뉴 › <b>Payment</b> · 요금제마다 <b>Upgrade</b> 버튼으로 변경합니다 ·
       <b>All plans are exclusive of tax</b> — 표시 금액은 세금 별도입니다</figcaption>
   </figure>
@@ -910,7 +1005,13 @@
   </ul>
 
   <figure class="shot">
-    <img src="shots/61-topup_en.png" alt="Top-up additional credit 충전 영역과 프로모션 코드 입력란">
+    <div class="annotated-frame p">
+      <img src="shots/61-topup_en.png" alt="Top-up additional credit 충전 영역과 프로모션 코드 입력란">
+      <span class="focus" style="left:18.3%;top:47.5%;width:62.7%;height:19.5%"></span>
+      <span class="anno" style="left:12%;top:42%"><span class="n">1</span>추가 크레딧 충전</span>
+      <span class="focus" style="left:20%;top:92.5%;width:59.3%;height:7.2%"></span>
+      <span class="anno" style="left:12%;top:86.5%"><span class="n">2</span>프로모션 코드</span>
+    </div>
     <figcaption><b>Top-up additional credit</b> · <b>Credit validity : 3 months</b>로 유효기간이 함께 표시됩니다 ·
       아래 <b>Promotion code</b> 칸에 프로모션 코드를 넣고 <b>Apply</b>를 누르면 적용됩니다</figcaption>
   </figure>
@@ -962,7 +1063,15 @@
   </ul>
 
   <figure class="shot">
-    <img src="shots/70-soldout_en.png" alt="품절 제품 알림 팝업과 Replace Product 버튼">
+    <div class="annotated-frame p">
+      <img src="shots/70-soldout_en.png" alt="품절 제품 알림 팝업과 Replace Product 버튼">
+      <span class="focus" style="left:.2%;top:7%;width:15.8%;height:17.2%"></span>
+      <span class="anno" style="left:16.8%;top:9%"><span class="n">1</span>품절 알림 확인</span>
+      <span class="focus" style="left:1%;top:24%;width:14.2%;height:31.5%"></span>
+      <span class="anno" style="left:16%;top:31%"><span class="n">2</span>영상과 품절 제품 확인</span>
+      <span class="focus" style="left:4.8%;top:57%;width:6.5%;height:5%"></span>
+      <span class="anno" style="left:12%;top:56.8%"><span class="n">3</span>Replace Product 클릭</span>
+    </div>
     <figcaption>품절 알림 · 어떤 영상의 어떤 제품이 품절인지 <b>영상 제목과 제품 이미지</b>로 함께 보여줍니다 ·
       아래 <b>Replace Product</b>를 누르면 제품 목록이 열려 다른 제품으로 바꿀 수 있습니다 ·
       설명란 아래 태그 목록에서도 품절 제품이 <b>빨간 테두리</b>로 표시됩니다</figcaption>
